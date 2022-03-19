@@ -1,6 +1,10 @@
 TARGET_DIR = target
 TDNS_BRANCH = trust-dns-client-cli
 
+TEST_ZONE = doq.sinodun.com.
+NS = ns4.xot.rocks
+NS_IP = 18.198.201.187
+
 .PHONY: init-trust-dns
 init-trust-dns:
 	@cargo install trust-dns --all-features --bin named --git https://github.com/bluejekyll/trust-dns.git --branch ${TDNS_BRANCH}
@@ -28,3 +32,12 @@ test-dns:
 	dns -p tls -n 8.8.8.8:853 -t dns.google query www.salesforce.com AAAA
 	@echo "====> Test tls dns setup"
 	dns -p https -n 8.8.8.8:443 -t dns.google query www.salesforce.com AAAA
+
+.PHONY: test-tcp
+test-tcp:
+	@echo "====> Testing connection to ${TEST_ZONE}"
+	dns -p tcp -n ${NS_IP}:53 query ${TEST_ZONE} SOA
+	dns -p tcp -n ${NS_IP}:53 -z ${TEST_ZONE} create tdns.${TEST_ZONE} TXT 60 HELLO_WORLD
+	dns -p tcp -n ${NS_IP}:53 query tdns.${TEST_ZONE} TXT
+	dns -p tcp -n ${NS_IP}:53 -z ${TEST_ZONE} delete-record tdns.${TEST_ZONE} TXT HELLO_WORLD
+	dns -p tcp -n ${NS_IP}:53 query tdns.${TEST_ZONE} TXT
