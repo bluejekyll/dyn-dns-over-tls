@@ -44,7 +44,7 @@ test-tcp:
 
 .PHONY: test-tls
 test-tls:
-	@echo "====> Testing connection to ${TEST_ZONE} and updates"
+	@echo "====> Testing TLS connection to ${TEST_ZONE} and updates"
 	dns -p tls -n ${NS_IP}:853 -t sinodun.com query ${TEST_ZONE} SOA
 	dns -p tls -n ${NS_IP}:853 -t sinodun.com -z ${TEST_ZONE} create tdns.${TEST_ZONE} TXT 60 HELLO_WORLD
 	dns -p tls -n ${NS_IP}:853 -t sinodun.com query tdns.${TEST_ZONE} TXT
