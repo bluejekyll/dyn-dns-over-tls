@@ -94,7 +94,7 @@ doq.sinodun.com. 300 IN SOA ns4.xot.rocks. jad.sinodun.com. 2016121640 30000 300
 
 ```shell
 $ make test-tls
-====> Testing connection to doq.sinodun.com. and updates
+====> Testing TLS connection to doq.sinodun.com. and updates
 dns -p tls -n 18.198.201.187:853 -t sinodun.com query doq.sinodun.com. SOA
 ; using tls:18.198.201.187:853 dns_name:sinodun.com
 ;!!!THIS IS NOT VERIFYING THE SERVER TLS CERTIFICATE!!!
