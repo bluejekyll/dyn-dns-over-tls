@@ -26,3 +26,5 @@ test-dns:
 	dns -p tcp -n 8.8.8.8:53 query www.salesforce.com A
 	@echo "====> Test tls dns setup"
 	dns -p tls -n 8.8.8.8:853 -t dns.google query www.salesforce.com AAAA
+	@echo "====> Test tls dns setup"
+	dns -p https -n 8.8.8.8:443 -t dns.google query www.salesforce.com AAAA
