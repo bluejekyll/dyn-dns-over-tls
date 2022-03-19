@@ -35,9 +35,18 @@ test-dns:
 
 .PHONY: test-tcp
 test-tcp:
-	@echo "====> Testing connection to ${TEST_ZONE}"
+	@echo "====> Testing TCP connection to ${TEST_ZONE} and updates"
 	dns -p tcp -n ${NS_IP}:53 query ${TEST_ZONE} SOA
 	dns -p tcp -n ${NS_IP}:53 -z ${TEST_ZONE} create tdns.${TEST_ZONE} TXT 60 HELLO_WORLD
 	dns -p tcp -n ${NS_IP}:53 query tdns.${TEST_ZONE} TXT
 	dns -p tcp -n ${NS_IP}:53 -z ${TEST_ZONE} delete-record tdns.${TEST_ZONE} TXT HELLO_WORLD
 	dns -p tcp -n ${NS_IP}:53 query tdns.${TEST_ZONE} TXT
+
+.PHONY: test-tls
+test-tls:
+	@echo "====> Testing connection to ${TEST_ZONE} and updates"
+	dns -p tls -n ${NS_IP}:853 -t sinodun.com query ${TEST_ZONE} SOA
+	dns -p tls -n ${NS_IP}:853 -t sinodun.com -z ${TEST_ZONE} create tdns.${TEST_ZONE} TXT 60 HELLO_WORLD
+	dns -p tls -n ${NS_IP}:853 -t sinodun.com query tdns.${TEST_ZONE} TXT
+	dns -p tls -n ${NS_IP}:853 -t sinodun.com -z ${TEST_ZONE} delete-record tdns.${TEST_ZONE} TXT HELLO_WORLD
+	dns -p tls -n ${NS_IP}:853 -t sinodun.com query tdns.${TEST_ZONE} TXT
